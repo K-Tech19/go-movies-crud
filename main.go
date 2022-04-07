@@ -90,6 +90,34 @@ func createMovie(w http.ResponseWriter, r *http.Request){
 	json.NewEncoder(w).Encode(movie) // returns movies after we finish altering it
 }
 
+func updateMovie(w http.ResponseWriter, r *http.Request){
+	// Set json content type 
+	// params
+	// loop over our movies
+	// delete the movie with the id that we sent
+	// add a new movie - the movie that we send in the body of postman
+
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+
+	for index, item := range movies{
+
+		if item.ID == params["id"]{
+			movies = append(movies[:index], movies[index+1:]...)
+			var movie Movie // want to append the current movie
+			// below is the same idea we are doing in create movie func
+			_ = json.NewDecoder(r.Body).Decode(&movie)
+			movie.ID = params["id"] // different from the createMovie func, movie.ID is going keep the same id we are changing
+			movies = append(movies, movie)
+			json.NewEncoder(w).Encode(movie) // want to return the movie to the user
+			return
+		}
+
+	}
+}
+
+
+
 
 func main(){
 	r := mux.NewRouter() // can be found inside the gorilla mux package, creates a new router to use
