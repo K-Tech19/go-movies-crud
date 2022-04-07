@@ -4,6 +4,7 @@ import (
 	"encoding/json" // package to help encode our file to json when using thunder client
 	"fmt"           // package to allow us to print strings and other things to the user
 	"log"           // package to log
+
 	// package to allow us to create randomized integers
 	"net/http" // package to allow us to create a server through golang
 	// package for converting int to strings
@@ -30,22 +31,23 @@ type Director struct{
 	Lastname string `json:"lastname"`
 }
 
+// Database where all the movies are kept
 var movies []Movie 
 
-// Create all movies function
+// Create all movies function to "get" all movies
 
 func getMovies(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-Type", "application/json") // setting our content to display as json
 	json.NewEncoder(w).Encode(movies) // we are going encode w into json then we want to pass the complete movies 
 }
- // create the delete function
+ // Create the delete function to "delete" one movie
 
 func deleteMovie( w http.ResponseWriter, r *http.Request){
 
 	w.Header().Set("Content-Type", "application/json")
 	params :=  mux.Vars(r) // params or the id
 
-	// for a range function we have to pass it an index or var i = 0 and the item in this case a movie
+	// for range function we have to pass it an index or var i = 0 and the item in this case a movie
 	for index, item := range movies { // similar to for each in other languages
 			// item.ID selects a single id out of all the ids in the movies list
 		if item.ID == params["id"] {
@@ -57,8 +59,24 @@ func deleteMovie( w http.ResponseWriter, r *http.Request){
 			break
 		}
 	}
+	json.NewEncoder(w).Encode(movies) // returns all the rest of the movies after one was deleted successfully 
 }
 
+// Create the getMovie function to "get" one movie
+
+func getMovie(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+
+	// if you dont want to use anything as an index you an replace the keyword index with _ instead.
+	for _, item := range movies{
+		if item.ID == params["id"]{
+			// gets one particular item or movies at a time and return to continue the task
+			json.NewEncoder(w).Encode(item)
+			return
+		}
+	}
+}
 
 
 func main(){
