@@ -10,7 +10,6 @@ import (
 	// package to allow us to create randomized integers
 	"net/http" // package to allow us to create a server through golang
 	// package for converting int to strings
-
 	"github.com/gorilla/mux" // an external package that we installed
 )
 
@@ -122,7 +121,7 @@ func updateMovie(w http.ResponseWriter, r *http.Request){
 func main(){
 	r := mux.NewRouter() // can be found inside the gorilla mux package, creates a new router to use
 
-	movies = append(movies, Movie{ ID: "1", Isbn: "435229", Title: "Astro-Kid", Director: &Director{Firstname: "Kenny", Lastname: "Jean"}})
+	movies = append(movies, Movie{ID: "1", Isbn: "435229", Title: "Astro-Kid", Director: &Director{Firstname: "Kenny", Lastname: "Jean"}})
 	movies = append(movies, Movie{ID: "2", Isbn: "234392", Title: "Spaceman in Space", Director: &Director{Firstname: "Peter", Lastname: "Hawkings"}})
 
 	// below we are connecting our handle functions for our routes: endpoints, functions, and methods.
